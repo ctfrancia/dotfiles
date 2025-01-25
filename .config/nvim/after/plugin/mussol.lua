@@ -1,0 +1,1 @@
+require('mussol').setup()
