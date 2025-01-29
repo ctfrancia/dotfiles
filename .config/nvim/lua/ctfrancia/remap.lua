@@ -23,14 +23,14 @@ end)
 vim.keymap.set('n', '<leader>r', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, opts)
 
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+-- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("i", "kj", "<Esc>")
 
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
 vim.g.tmux_navigator_no_mappings = 1
 
-vim.keymap.set("n", "<C-H>", ":TmuxNavigateLeft<cr>", {silent = true})
-vim.keymap.set("n", "<C-J>", ":TmuxNavigateDown<cr>" , {silent = true})
-vim.keymap.set("n", "<C-K>", ":TmuxNavigateUp<cr>", {silent = true})
-vim.keymap.set("n", "<C-L>", ":TmuxNavigateRight<cr>", {silent = true})
+vim.keymap.set("n", "<C-h>", ":TmuxNavigateLeft<cr>", {silent = true})
+vim.keymap.set("n", "<C-j>", ":TmuxNavigateDown<cr>" , {silent = true})
+vim.keymap.set("n", "<C-k>", ":TmuxNavigateUp<cr>", {silent = true})
+vim.keymap.set("n", "<C-l>", ":TmuxNavigateRight<cr>", {silent = true})
