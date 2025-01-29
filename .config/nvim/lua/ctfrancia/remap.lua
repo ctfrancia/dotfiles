@@ -30,7 +30,7 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 
 vim.g.tmux_navigator_no_mappings = 1
 
-vim.keymap.set("n", "<C-H>", ":TmuxNavigateLeft<cr>")
-vim.keymap.set("n", "<C-J>", ":TmuxNavigateDown<cr>")
-vim.keymap.set("n", "<C-K>", ":TmuxNavigateUp<cr>")
-vim.keymap.set("n", "<C-L>", ":TmuxNavigateRight<cr>")
+vim.keymap.set("n", "<C-H>", ":TmuxNavigateLeft<cr>", {silent = true})
+vim.keymap.set("n", "<C-J>", ":TmuxNavigateDown<cr>" , {silent = true})
+vim.keymap.set("n", "<C-K>", ":TmuxNavigateUp<cr>", {silent = true})
+vim.keymap.set("n", "<C-L>", ":TmuxNavigateRight<cr>", {silent = true})
