@@ -51,6 +51,7 @@ return require('packer').startup(function(use)
 		"neovim/nvim-lspconfig",
 	}
 
+    use 'christoomey/vim-tmux-navigator'
     use { "kkharji/sqlite.lua" }
     use  '/Users/christian.francia/Projects/personal/mussol'
     use "nvim-lua/plenary.nvim"
