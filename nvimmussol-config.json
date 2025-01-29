@@ -1,0 +1,1 @@
+{"highlight": {"BUG": {"bg": "none", "fg": "red"}, "NOTE": {"bg": "none", "fg": "blue"}, "FIXME": {"bg": "none", "fg": "yellow"}, "TODO": {"bg": "none", "fg": "orange"}}, "path": "/Users/christian.francia/.config/nvimmussol-config.json", "targets": ["TODO", "FIXME", "BUG", "NOTE"], "name": ""}

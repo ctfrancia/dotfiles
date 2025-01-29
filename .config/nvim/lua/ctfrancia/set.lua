@@ -1,5 +1,5 @@
 vim.opt.nu = true
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false -- set relative number
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -26,3 +26,5 @@ vim.opt.colorcolumn = "85"
 
 -- makes it so that you can yank to system clipboard
 vim.opt.clipboard = "unnamed"
+
+-- vim.opt.foldmethod = "syntax"
