@@ -20,6 +20,7 @@ vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
 
+local opts = {noremap = true, silent = true}
 vim.keymap.set('n', '<leader>r', vim.diagnostic.goto_next, opts)
 -- vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, opts)
 
