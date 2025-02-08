@@ -1,7 +1,7 @@
 local local_plugin = {
     {
         "mussol",
-        dir = "~/Projects/personal/mussol",
+        dir = "~/Projects/mussol",
         config = function()
             require("mussol").setup()
         end,
