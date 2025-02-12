@@ -17,7 +17,8 @@ return {
         require("conform").setup({
             formatters_by_ft = {}
         })
-     local cmp = require('cmp')
+        local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+        local cmp = require('cmp')
         local cmp_lsp = require("cmp_nvim_lsp")
         local capabilities = vim.tbl_deep_extend(
             "force",
@@ -30,7 +31,7 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
-                "rust_analyzer",
+                -- "rust_analyzer",
                 "gopls",
                 "terraformls",
             },
@@ -40,7 +41,6 @@ return {
                         capabilities = capabilities
                     }
                 end,
-
                 zls = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.zls.setup({
@@ -71,6 +71,46 @@ return {
                         }
                     }
                 end,
+                ["gopls"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.gopls.setup{
+                        capabilities = capabilities,
+                        on_attach = function(client, bufnr)
+                            -- Enable formatting on save
+                            if client.server_capabilities.documentFormattingProvider then
+                                vim.api.nvim_create_autocmd("BufWritePre", {
+                                    group = format_sync_grp,
+                                    buffer = bufnr,
+                                    callback = function()
+                                        vim.lsp.buf.format({
+                                            timeout_ms = 3000,
+                                            buffer = bufnr,
+                                        })
+                                    end,
+                                })
+                            end
+                        end,
+                        settings = {
+                            gopls = {
+                                analyses = {
+                                    unusedparams = true,
+                                },
+                                staticcheck = true,
+                                gofumpt = true,
+                                hints = {
+                                    assignVariableTypes = true,
+                                    compositeLiteralFields = true,
+                                    compositeLiteralTypes = true,
+                                    constantValues = true,
+                                    functionTypeParameters = true,
+                                    parameterNames = true,
+                                    rangeVariableTypes = true,
+                                },
+                            },
+                        },
+                    }
+                    vim.g.go_fmt_autosave = 1
+                end
             }
         })
 
@@ -92,8 +132,8 @@ return {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
             }, {
-                { name = 'buffer' },
-            })
+                    { name = 'buffer' },
+                })
         })
 
         vim.diagnostic.config({
