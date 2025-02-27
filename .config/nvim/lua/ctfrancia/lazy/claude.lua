@@ -1,12 +1,22 @@
 return {
     'pasky/claude.vim',
     setup = function()
-        local file = io.open("~/dotfiles/.config/nvim/lua/ctfrancia/keys/claude.txt", "r")
-        if not file then return nil end
-        local content = file:read "*a" -- *a or *all reads the whole file
+        vim.notify("Setting up Claude")
+        local config_path = vim.fn.stdpath('config')
+        local file_path = config_path .. "/../keys/claude.txt"
+
+        local file = io.open(file_path, "r")
+
+        if not file then
+            vim.notify("Claude API key not found" .. file_path, vim.log.levels.ERROR)
+            return nil
+        end
+
+        local content = file:read("*a"):gsub("^%s*(.-)%s*$", "%1") -- Trim whitespace
+
         file:close()
 
-        print(content)
+        vim.notify("Claude API key found, length: ", #content)
 
         vim.g.claude_api_key = content
         vim.g.claude_map_implement = "<Leader>ci"
