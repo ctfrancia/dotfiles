@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # for work
-export AWS_PROFILE=tfm-develop
+export AWS_PROFILE=tfm-develop-new
 # used for docker ARM
 export DOCKER_DEFAULT_PLATFORM=linux/amd64 
 #alias prod='export AWS_PROFILE=< my_product_team_prod_account >'

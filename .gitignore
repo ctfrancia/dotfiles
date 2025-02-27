@@ -2,5 +2,6 @@
 .config/github-copilot/*
 .config/iterm2/*
 .config/goreleaser/*
-.config/nvim/lua/ctfrancia/keys/*
 lazy-lock.json
+
+keys.lua
