@@ -2,8 +2,9 @@ local local_plugin = {
     {
         "mussol",
         dir = "~/Projects/mussol",
+        disable = true,
         config = function()
-            require("mussol").setup()
+            -- require("mussol").setup()
         end,
     },
 }
