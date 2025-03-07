@@ -3,16 +3,6 @@ return {
     version = "*",  -- recommended, use latest release instead of latest commit
     lazy = true,
     ft = "markdown",
-    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-    -- event = {
-    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-    --   -- refer to `:h file-pattern` for more examples
-    --   "BufReadPre path/to/my-vault/*.md",
-    --   "BufNewFile path/to/my-vault/*.md",
-    -- },
-    -- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
-    -- way then set 'mappings = {}'.
     mappings = {
         -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
         ["gf"] = {
@@ -42,14 +32,36 @@ return {
 
         -- see below for full list of optional dependencies 👇
     },
+    opts = function()
+        local username = vim.fn.system("whoami"):gsub("\n", "")
+        local workspace
+
+        print("Setting up Obsidian workspace for user: " .. username)
+        if username:match("ctfrancia") then
+            workspace = {
+                name = "personal",
+                path = "/Users/ctfrancia/Library/Mobile Documents/iCloud~md~obsidian/Documents/thoughts",
+            }
+        else
+            workspace = {
+                name = "work",
+                path = "/Users/christian.francia/worknotes",
+            }
+        end
+
+        print("Using workspace: " .. vim.inspect(workspace))
+        return {
+            workspaces = {workspace},
+            -- Add your other options here
+        }
+    end,
+    --[[
     opts = {
         workspaces = {
-            --[[
             {
                 name = "personal",
                 path = "/Users/ctfrancia/Library/Mobile Documents/iCloud~md~obsidian/Documents/thoughts",
             },
-            ]]
             {
                 name = "work",
                 path = "/Users/christian.francia/worknotes",
@@ -57,4 +69,5 @@ return {
         },
         -- see below for full list of options 👇
     },
+    ]]
 }
