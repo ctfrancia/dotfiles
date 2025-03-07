@@ -124,7 +124,7 @@ alias evp='nvim ~/.config/nvim/lua/ctfrancia/lazy'
 alias git='LC_ALL=en_US git'
 alias so='aws sso login --sso-session tui-sso'
 alias oo='cd $HOME/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/thoughts'
-alias on="sh $HOME/bin/on"
+alias on="zsh $HOME/bin/on"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
