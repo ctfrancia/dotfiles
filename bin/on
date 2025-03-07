@@ -1,13 +1,54 @@
 #!/bin/zsh
 
-if [ -z "$1" ]; then
-    echo "need a name for the file"
+# Configuration based on username
+declare -A CONFIG
+CONFIG[christian.francia]="/Users/christian.francia/worknotes:inbox"
+CONFIG[ctfrancia]="/Users/ctfrancia/Library/Mobile Documents/iCloud~md~obsidian/Documents/thoughts:inbox"
+
+current_user=$(whoami)
+user_config=${CONFIG[$current_user]}
+
+function check_input() {
+    if [ -z "$1" ]; then
+        echo "Error: Need a name for the file"
+        exit 1
+    fi
+}
+
+function check_path() {
+    if [ ! -d "$1" ]; then
+        mkdir -p "$1"
+    fi
+}
+
+function create_note() {
+    local base_path=$(echo "$1" | cut -d':' -f1)
+    local subfolder=$(echo "$1" | cut -d':' -f2)
+    local note_title="$2"
+    
+    # Navigate to the correct directory
+    cd "$base_path" || { echo "Error: Unable to access $base_path"; exit 1; }
+    
+    # Check if subfolder exists
+    check_path "$subfolder"
+    
+    # Create filename with date prefix and replace spaces with hyphens
+    local file_name=$(echo "$note_title" | tr ' ' '-')
+    local formatted_file_name="$(date "+%Y-%m-%d")_${file_name}.md"
+    local full_path="${subfolder}/${formatted_file_name}"
+    
+    # Create and open the file
+    touch "$full_path"
+    nvim "$full_path"
+}
+
+# Main execution
+check_input "$1"
+
+if [ -z "$user_config" ]; then
+    echo "Error: No configuration found for user $current_user"
     exit 1
 fi
 
-file_name=$(echo "$1" | tr ' ' '-')
-formatted_file_name=$(date "+%Y-%m-%d")_${file_name}.md
-# cd "/Users/ctfrancia/Library/Mobile\ Documents/iCloud-md-obsidian/Documents/thoughts/" || exit
-cd "/Users/ctfrancia/Library/Mobile Documents/iCloud~md~obsidian/Documents/thoughts" || exit
-touch "inbox/${formatted_file_name}"
-nvim "inbox/${formatted_file_name}"
+create_note "$user_config" "$1"
+exit 0

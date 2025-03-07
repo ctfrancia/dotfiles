@@ -44,18 +44,17 @@ return {
     },
     opts = {
         workspaces = {
+            --[[
             {
                 name = "personal",
                 path = "/Users/ctfrancia/Library/Mobile Documents/iCloud~md~obsidian/Documents/thoughts",
             },
-            --[[
-      {
-        name = "work",
-        path = "~/vaults/work",
-      },
             ]]
+            {
+                name = "work",
+                path = "/Users/christian.francia/worknotes",
+            },
         },
-
         -- see below for full list of options 👇
     },
 }

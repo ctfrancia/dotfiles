@@ -1,5 +1,7 @@
 return {
+    --[[
     "folke/noice.nvim",
+    disable = true,
     event = "VeryLazy",
     opts = {
         -- add any options here
@@ -19,4 +21,5 @@ return {
         inc_rename = false, -- enables an input dialog for inc-rename.nvim
         lsp_doc_border = false, -- add a border to hover docs and signature help
     },
+    ]]
 }
