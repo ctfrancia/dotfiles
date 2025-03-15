@@ -1,5 +1,6 @@
 local local_plugin = {
     {
+        --[[
         "mussol",
         dir = "~/Projects/personal/mussol",
         opts = {
@@ -10,6 +11,7 @@ local local_plugin = {
                 { name = "NOTE",  wt = 1,  fg = "blue",   bg = "none" },
             }
         },
+    ]]
     },
     {
         "bedrock",
