@@ -26,6 +26,7 @@ return {
             end,
             desc = "Open chat",
         },
+        --[[
         {
             "<C-]>",
             function()
@@ -33,6 +34,7 @@ return {
             end,
             desc = "Send chat message",
         },
+        ]]
         {
             "<Leader>cx",
             function()

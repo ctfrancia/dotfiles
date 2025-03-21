@@ -4,7 +4,6 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
 # for work
 export AWS_PROFILE=tfm-develop-new
 # used for docker ARM
@@ -90,7 +89,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker docker-compose aws terraform)
+plugin=(git docker docker-compose aws terraform)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -126,12 +125,29 @@ alias so='aws sso login --sso-session tui-sso'
 alias oo='cd $HOME/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/thoughts'
 alias on="zsh $HOME/bin/on"
 
+set -o vi
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [[ -s "/Users/christian.francia/.gvm/scripts/gvm" ]] && source "/Users/christian.francia/.gvm/scripts/gvm"
 
 export PATH="$PATH:/Users/christian.francia/Library/Application Support/JetBrains/Toolbox/scripts"
+export PATH="$PATH:$HOME/go/bin"
+
+eval "$(fzf --zsh)"
+
+export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+_fzf_compgen_path() {
+    fd --hidden --exclude .git . "$1"
+}
+
+_fzf_compgen_dir() {
+    fd --type=d --hidden --exclude .git . "$1"
+}
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform

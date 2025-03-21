@@ -11,6 +11,17 @@ local local_plugin = {
             }
         },
     },
+    {
+        "bedrock",
+        dir = "~/Projects/tui-ext/bedrock",
+        opts = {
+            foo = "bar",
+            server_path = "/Users/christian.francia/Projects/tui-ext/bedrock/server",
+        },
+        dependencies = {
+            -- "heilgar/nvim-http-client",
+        },
+    }
 }
 
 return local_plugin
