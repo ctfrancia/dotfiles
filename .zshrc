@@ -124,6 +124,7 @@ alias git='LC_ALL=en_US git'
 alias so='aws sso login --sso-session tui-sso'
 alias oo='cd $HOME/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/thoughts'
 alias on="zsh $HOME/bin/on"
+alias air="~/go/bin/air"
 
 set -o vi
 
