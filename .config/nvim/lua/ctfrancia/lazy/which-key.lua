@@ -1,4 +1,5 @@
 return {
+    --[[
   "folke/which-key.nvim",
   event = "VeryLazy",
   opts = {
@@ -15,4 +16,5 @@ return {
       desc = "Buffer Local Keymaps (which-key)",
     },
   },
+    ]]
 }
