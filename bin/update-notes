@@ -1,0 +1,78 @@
+#!/bin/zsh
+
+# Configuration
+REPO_PATH="$HOME/Projects/personal/notes"
+LOG_FILE="$HOME/Projects/personal/notes/git_auto_update.log"
+DATE=$(date '+%Y-%m-%d %H:%M:%S')
+# Start SSH agent if not running
+# eval "$(ssh-agent -s)" >> "$LOG_FILE" 2>&1
+
+# Add your SSH key - you'll need to replace this with the path to your actual key
+# ssh-add ~/.ssh/id_rsa >> "$LOG_FILE" 2>&1
+
+# Function to log messages
+log_message() {
+  echo "[$DATE] $1" >> "$LOG_FILE"
+}
+
+# Navigate to repository
+cd "$REPO_PATH" || {
+  log_message "ERROR: Failed to change directory to $REPO_PATH"
+  exit 1
+}
+
+# Log the start of the process
+log_message "Starting git repository update"
+
+# Fetch and check for changes
+git fetch origin >> "$LOG_FILE" 2>&1
+
+# Get current branch name
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+if [ $? -ne 0 ]; then
+  CURRENT_BRANCH="main"  # Default to main if we can't determine branch
+fi
+log_message "Current branch: $CURRENT_BRANCH"
+
+# Check if branch has upstream configuration
+if git rev-parse --abbrev-ref $CURRENT_BRANCH@{upstream} &>/dev/null; then
+  log_message "Checking for remote changes"
+  
+  # Try to get local and remote hashes
+  LOCAL=$(git rev-parse $CURRENT_BRANCH 2>/dev/null)
+  REMOTE=$(git rev-parse $CURRENT_BRANCH@{upstream} 2>/dev/null)
+  
+  if [ -n "$LOCAL" ] && [ -n "$REMOTE" ] && [ "$LOCAL" != "$REMOTE" ]; then
+    log_message "Remote changes detected, pulling updates"
+    git pull origin $CURRENT_BRANCH >> "$LOG_FILE" 2>&1
+  else
+    log_message "No remote changes to pull"
+  fi
+else
+  # No upstream branch is configured
+  log_message "No upstream branch configured, attempting to pull anyway"
+  git pull origin $CURRENT_BRANCH >> "$LOG_FILE" 2>&1
+fi
+
+# Check if there are local changes to commit
+if [[ -n $(git status --porcelain) ]]; then
+  log_message "Local changes detected, committing and pushing"
+  
+  # Add all changes
+  git add . >> "$LOG_FILE" 2>&1
+  
+  # Commit with timestamp
+  git commit -m "Automatic update: $DATE" >> "$LOG_FILE" 2>&1
+  
+  # Push changes to current branch
+  git push origin $CURRENT_BRANCH >> "$LOG_FILE" 2>&1
+  
+  log_message "Changes pushed successfully"
+else
+  log_message "No local changes to commit"
+fi
+
+# Kill the SSH agent
+# ssh-agent -k >> "$LOG_FILE" 2>&1
+
+log_message "Repository update process completed"

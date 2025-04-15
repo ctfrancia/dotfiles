@@ -2,7 +2,7 @@
 
 # Configuration based on username
 declare -A CONFIG
-CONFIG[christian.francia]="/Users/christian.francia/worknotes:inbox"
+CONFIG[christian.francia]="/Users/christian.francia/Projects/personal/notes:inbox"
 CONFIG[ctfrancia]="/Users/ctfrancia/Library/Mobile Documents/iCloud~md~obsidian/Documents/thoughts:inbox"
 
 current_user=$(whoami)

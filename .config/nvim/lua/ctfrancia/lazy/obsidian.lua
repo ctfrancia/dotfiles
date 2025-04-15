@@ -45,7 +45,8 @@ return {
         else
             workspace = {
                 name = "work",
-                path = "/Users/christian.francia/worknotes",
+                -- path to private repo vault
+                path = "/Users/christian.francia/Projects/personal/notes",
             }
         end
 
