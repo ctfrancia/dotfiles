@@ -126,6 +126,7 @@ alias so='aws sso login --sso-session tui-sso'
 alias oo='zsh $HOME/bin/oo'
 alias on="zsh $HOME/bin/on"
 alias air="~/go/bin/air"
+alias update-notes="zsh ~/bin/update-notes"
 
 set -o vi
 
