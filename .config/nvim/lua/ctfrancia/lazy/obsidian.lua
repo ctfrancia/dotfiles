@@ -36,7 +36,6 @@ return {
         local username = vim.fn.system("whoami"):gsub("\n", "")
         local workspace
 
-        print("Setting up Obsidian workspace for user: " .. username)
         if username:match("ctfrancia") then
             workspace = {
                 name = "personal",
@@ -50,25 +49,14 @@ return {
             }
         end
 
-        print("Using workspace: " .. vim.inspect(workspace))
         return {
             workspaces = {workspace},
             -- Add your other options here
+            follow_url_func = function(url)
+                -- Open the URL in the default web browser.
+                vim.fn.jobstart({"open", url})  -- Mac OS
+                -- vim.fn.jobstart({"xdg-open", url})  -- linux
+            end,
         }
     end,
-    --[[
-    opts = {
-        workspaces = {
-            {
-                name = "personal",
-                path = "/Users/ctfrancia/Library/Mobile Documents/iCloud~md~obsidian/Documents/thoughts",
-            },
-            {
-                name = "work",
-                path = "/Users/christian.francia/worknotes",
-            },
-        },
-        -- see below for full list of options 👇
-    },
-    ]]
 }

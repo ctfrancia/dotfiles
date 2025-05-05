@@ -93,6 +93,8 @@ plugin=(git docker docker-compose aws terraform)
 
 source $ZSH/oh-my-zsh.sh
 
+source ~/dotfiles/bin/oo.zsh
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
