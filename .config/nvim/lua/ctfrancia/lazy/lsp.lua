@@ -15,9 +15,15 @@ return {
     },
     config = function()
         require("conform").setup({
-            formatters_by_ft = {}
+            formatters_by_ft = {
+                go = { "gofumpt" }, -- or "gofmt"
+            },
+            format_on_save = {
+                timeout_ms = 3000,
+                lsp_fallback = true,
+            },
         })
-        local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+        -- local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
         local cmp = require('cmp')
         local cmp_lsp = require("cmp_nvim_lsp")
         local capabilities = vim.tbl_deep_extend(
@@ -31,7 +37,6 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
-                -- "rust_analyzer",
                 "gopls",
                 "terraformls",
             },
@@ -41,25 +46,6 @@ return {
                         capabilities = capabilities
                     }
                 end,
-                --[[
-                -- this is for zig
-                zls = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.zls.setup({
-                        root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
-                        settings = {
-                            zls = {
-                                enable_inlay_hints = true,
-                                enable_snippets = true,
-                                warn_style = true,
-                            },
-                        },
-                    })
-                   vim.g.zig_fmt_parse_errors = 0
-                   vim.g.zig_fmt_autosave = 0
-
-                end,
-                ]]
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.lua_ls.setup {
@@ -74,6 +60,31 @@ return {
                         }
                     }
                 end,
+                ["gopls"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.gopls.setup {
+                        capabilities = capabilities,
+                        settings = {
+                            gopls = {
+                                analyses = {
+                                    unusedparams = true,
+                                },
+                                staticcheck = true,
+                                gofumpt = true,
+                                hints = {
+                                    assignVariableTypes = true,
+                                    compositeLiteralFields = true,
+                                    compositeLiteralTypes = true,
+                                    constantValues = true,
+                                    functionTypeParameters = true,
+                                    parameterNames = true,
+                                    rangeVariableTypes = true,
+                                },
+                            },
+                        },
+                    }
+                end
+                --[[
                 ["gopls"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.gopls.setup{
@@ -112,8 +123,8 @@ return {
                             },
                         },
                     }
-                    vim.g.go_fmt_autosave = 1
                 end
+                --]]
             }
         })
 
@@ -135,8 +146,8 @@ return {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
             }, {
-                    { name = 'buffer' },
-                })
+                { name = 'buffer' },
+            })
         })
 
         vim.diagnostic.config({

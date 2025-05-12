@@ -14,6 +14,7 @@ local local_plugin = {
     ]]
     },
     {
+        --[[
         "bedrock",
         dir = "~/Projects/tui-ext/bedrock",
         opts = {
@@ -23,6 +24,7 @@ local local_plugin = {
         dependencies = {
             -- "heilgar/nvim-http-client",
         },
+        ]]
     }
 }
 
