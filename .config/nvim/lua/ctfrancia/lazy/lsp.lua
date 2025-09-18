@@ -2,8 +2,8 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
         "stevearc/conform.nvim",
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason.nvim",
+        "mason-org/mason-lspconfig.nvim",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
@@ -11,44 +11,63 @@ return {
         "hrsh7th/nvim-cmp",
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
-        "j-hui/fidget.nvim",
+        "j-hui/fidget.nvim"
     },
     config = function()
-        require("conform").setup({
-            formatters_by_ft = {
-                go = { "gofumpt" }, -- or "gofmt"
-            },
-            format_on_save = {
-                timeout_ms = 3000,
-                lsp_fallback = true,
-            },
-        })
-        -- local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
-        local cmp = require('cmp')
-        local cmp_lsp = require("cmp_nvim_lsp")
-        local capabilities = vim.tbl_deep_extend(
-            "force",
-            {},
-            vim.lsp.protocol.make_client_capabilities(),
-            cmp_lsp.default_capabilities())
-
         require("fidget").setup({})
         require("mason").setup()
+
+        local cmp_nvim_lsp = require('cmp_nvim_lsp')
+        local capabilities = cmp_nvim_lsp.default_capabilities()
+
+        -- Setup mason-lspconfig with automatic server setup
         require("mason-lspconfig").setup({
             ensure_installed = {
-                "lua_ls",
                 "gopls",
                 "terraformls",
+                "lua_ls",
             },
             handlers = {
-                function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
-                        capabilities = capabilities
-                    }
+                -- Default handler for all servers
+                function(server_name)
+                    vim.lsp.config(server_name, {
+                        capabilities = capabilities,
+                    })
+                    vim.lsp.enable(server_name)
                 end,
+
+                -- Custom handler for gopls
+                ["gopls"] = function()
+                    vim.lsp.config.gopls = {
+                        cmd = { 'gopls' },
+                        filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+                        root_markers = { 'go.work', 'go.mod', '.git' },
+                        capabilities = capabilities,
+                        settings = {
+                            gopls = {
+                                analyses = {
+                                    unusedparams = true,
+                                },
+                                staticcheck = true,
+                                gofumpt = true,
+                                hints = {
+                                    assignVariableTypes = true,
+                                    compositeLiteralFields = true,
+                                    compositeLiteralTypes = true,
+                                    constantValues = true,
+                                    functionTypeParameters = true,
+                                    parameterNames = true,
+                                    rangeVariableTypes = true,
+                                },
+                            },
+                        },
+                    }
+                    vim.lsp.enable('gopls')
+                end,
+
+                -- Custom handler for lua_ls
                 ["lua_ls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup {
+                    vim.lsp.config('lua_ls', {
                         capabilities = capabilities,
                         settings = {
                             Lua = {
@@ -58,100 +77,45 @@ return {
                                 }
                             }
                         }
-                    }
+                    })
+                    vim.lsp.enable('lua_ls')
                 end,
-                ["gopls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.gopls.setup {
-                        capabilities = capabilities,
-                        settings = {
-                            gopls = {
-                                analyses = {
-                                    unusedparams = true,
-                                },
-                                staticcheck = true,
-                                gofumpt = true,
-                                hints = {
-                                    assignVariableTypes = true,
-                                    compositeLiteralFields = true,
-                                    compositeLiteralTypes = true,
-                                    constantValues = true,
-                                    functionTypeParameters = true,
-                                    parameterNames = true,
-                                    rangeVariableTypes = true,
-                                },
-                            },
-                        },
-                    }
-                end
-                --[[
-                ["gopls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.gopls.setup{
-                        capabilities = capabilities,
-                        on_attach = function(client, bufnr)
-                            -- Enable formatting on save
-                            if client.server_capabilities.documentFormattingProvider then
-                                vim.api.nvim_create_autocmd("BufWritePre", {
-                                    group = format_sync_grp,
-                                    buffer = bufnr,
-                                    callback = function()
-                                        vim.lsp.buf.format({
-                                            timeout_ms = 3000,
-                                            buffer = bufnr,
-                                        })
-                                    end,
-                                })
-                            end
-                        end,
-                        settings = {
-                            gopls = {
-                                analyses = {
-                                    unusedparams = true,
-                                },
-                                staticcheck = true,
-                                gofumpt = true,
-                                hints = {
-                                    assignVariableTypes = true,
-                                    compositeLiteralFields = true,
-                                    compositeLiteralTypes = true,
-                                    constantValues = true,
-                                    functionTypeParameters = true,
-                                    parameterNames = true,
-                                    rangeVariableTypes = true,
-                                },
-                            },
-                        },
-                    }
-                end
-                --]]
             }
         })
 
-        local cmp_select = { behavior = cmp.SelectBehavior.Select }
+        -- Format on save for multiple file types
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            pattern = { "*.go", "*.lua" },
+            callback = function()
+                vim.lsp.buf.format({ timeout_ms = 3000 })
+            end,
+            desc = "Format Go and Lua files on save"
+        })
 
+        -- Set up completion
+        local cmp = require('cmp')
         cmp.setup({
             snippet = {
                 expand = function(args)
-                    require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                    require('luasnip').lsp_expand(args.body)
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-                ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                ['<C-p>'] = cmp.mapping.select_prev_item(),
+                ['<C-n>'] = cmp.mapping.select_next_item(),
                 ['<C-y>'] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
             }),
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
-                { name = 'luasnip' }, -- For luasnip users.
+                { name = 'luasnip' },
             }, {
                 { name = 'buffer' },
             })
         })
 
+        -- Configure diagnostics
         vim.diagnostic.config({
-            -- update_in_insert = true,
             float = {
                 focusable = false,
                 style = "minimal",

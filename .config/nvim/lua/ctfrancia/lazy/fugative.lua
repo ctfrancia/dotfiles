@@ -3,6 +3,7 @@ return {
     config = function()
         vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 
+
         local CTFrancia_Fugitive = vim.api.nvim_create_augroup("CTFrancia_Fugitive", {})
 
         local autocmd = vim.api.nvim_create_autocmd
