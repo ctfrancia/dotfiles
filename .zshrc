@@ -4,10 +4,13 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+
 # for work
 export AWS_PROFILE=tfm-develop-new
 # used for docker ARM
 export DOCKER_DEFAULT_PLATFORM=linux/amd64 
+# export DOCKER_BUILDKIT=1
 #alias prod='export AWS_PROFILE=< my_product_team_prod_account >'
 #alias dev='export AWS_PROFILE=< my_product_team_dev_account >'
 #alias aws-sso='aws sso login --sso-session tfm-develop'  ← would be tui-sso in our example
@@ -125,7 +128,7 @@ alias evp='nvim ~/.config/nvim/lua/ctfrancia/lazy'
 alias git='LC_ALL=en_US git'
 alias so='aws sso login --sso-session tui-sso'
 # alias oo='cd $HOME/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/thoughts'
-alias oo='zsh $HOME/bin/oo'
+# alias oo='zsh $HOME/bin/oo'
 alias on="zsh $HOME/bin/on"
 alias air="~/go/bin/air"
 alias update-notes="zsh ~/bin/update-notes"
