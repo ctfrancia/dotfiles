@@ -1,0 +1,36 @@
+# Dynamic theme colors
+config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
+
+# Font
+font-family = "CaskaydiaMono Nerd Font"
+font-style = Regular
+font-size = 9
+
+# Window
+window-padding-x = 14
+window-padding-y = 14
+confirm-close-surface=false
+resize-overlay = never
+
+# Cursor styling
+cursor-style = "block"
+cursor-style-blink = false
+shell-integration-features = no-cursor
+
+# Keyboard bindings
+keybind = f11=toggle_fullscreen
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+
+keybind = super+d=new_split:right
+keybind = super+s=new_split:down
+
+keybind = alt+h=goto_split:left
+keybind = alt+j=goto_split:down
+keybind = alt+l=goto_split:right
+keybind = alt+k=goto_split:up
+
+keybind = super+c=copy_to_clipboard
+keybind = super+v=paste_from_clipboard
+
+keybind = super+shift+w=close_surface
