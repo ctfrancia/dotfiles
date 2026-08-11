@@ -25,6 +25,15 @@ local local_plugin = {
             -- "heilgar/nvim-http-client",
         },
         ]]
+    },
+    {
+        "severityhl.nvim",
+        dir = "/Users/christian.francia/Projects/personal/severityhl.nvim",
+        lazy = false,
+        opts = {
+            case_sensitive = true,
+        }
+
     }
 }
 

@@ -83,6 +83,7 @@ return {
             }
         })
 
+        --[[
         -- Format on save for multiple file types
         vim.api.nvim_create_autocmd("BufWritePre", {
             pattern = { "*.go", "*.lua" },
@@ -90,6 +91,29 @@ return {
                 vim.lsp.buf.format({ timeout_ms = 3000 })
             end,
             desc = "Format Go and Lua files on save"
+        })
+        --]]
+
+        vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(args)
+                local bufnr = args.buf
+                local client = vim.lsp.get_clients({ id = args.data.client_id })[1]
+                if not client then return end
+
+                -- Only set up format-on-save if the client supports formatting
+                if client.supports_method("textDocument/formatting") then
+                    vim.api.nvim_create_autocmd("BufWritePre", {
+                        buffer = bufnr,
+                        callback = function()
+                            vim.lsp.buf.format({
+                                bufnr = bufnr,
+                                timeout_ms = 3000
+                            })
+                        end,
+                        desc = "Format on save with LSP"
+                    })
+                end
+            end,
         })
 
         -- Set up completion
@@ -120,7 +144,7 @@ return {
                 focusable = false,
                 style = "minimal",
                 border = "rounded",
-                source = "always",
+                source = true,
                 header = "",
                 prefix = "",
             },

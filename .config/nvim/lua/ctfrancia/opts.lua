@@ -34,7 +34,7 @@ vim.opt.pumblend = 10
 vim.opt.winblend = 0       -- floating window transparency
 vim.opt.conceallevel = 0   -- don't hide markup
 vim.opt.concealcursor = "" -- don't hide cursor line markup
-vim.opt.lazyredraw = true  -- don't redraw during macros
+-- vim.opt.lazyredraw removed in Neovim 0.13 (redraw is now always optimized)
 vim.opt.synmaxcol = 300    -- syntax highlighting limit
 
 -- File handling
@@ -79,4 +79,4 @@ vim.keymap.set('n', 'dd', '"_dd', { desc = 'Delete line without yanking' })
 vim.keymap.set('v', 'd', '"_d', { desc = 'Delete without yanking' })
 vim.keymap.set('v', 'x', '"_x', { desc = 'Delete char without yanking' })
 
-vim.opt.foldmethod = "syntax"
+-- vim.opt.foldmethod = "indent"
